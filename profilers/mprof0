@@ -1,9 +1,0 @@
-Filename: /Users/sueliu/Downloads/python-extras/profilers/memscript.py
-
-Line #    Mem usage    Increment   Line Contents
-================================================
-     1     46.6 MiB     46.6 MiB   def my_func():
-     2     54.2 MiB      7.6 MiB       a = [1] * 1000000
-     3    122.9 MiB     68.7 MiB       b = [2] * 9000000
-     4    122.9 MiB      0.0 MiB       del b
-     5    122.9 MiB      0.0 MiB       return a
