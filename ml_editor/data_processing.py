@@ -39,23 +39,74 @@ def format_raw_df(df):
     return df
 
 
-def get_random_train_test_split(posts, test_size=0.3, random_state=42):
+def train_vectorizer(df):
     """
-    Get train/test split from DataFrame
-    Assume the DataFrame has one row per question example
-
+    Train a vectorizer for some data.
+    Returns the vectorizer to be used to transform non-training data, in
+    addition to the training vectors
+    
     Parameters
     ----------
-    posts : Pandas DataFrame
-        All posts with their labels
-    test_size : float, optional
-        The proportion to allocate to test, by default 0.3
-    random_state : int, optional
-        random_seed, by default 42
+    df : Pandas DataFrame
+        data used to train the vectorizer
     """
-    return train_test_split(
-        posts, test_size=test_size, random_state=random_state
+    vectorizer = TfidfVectorizer(
+        strip_accents='ascii', min_df=5, max_df=0.5, max_features=10000
     )
+    vectorizer.fit(df["full_text"].copy())
+    return vectorizer
+
+
+def get_vectorized_series(text_series, vectorizer):
+    """
+    Vectorizes an input series using a pre-trained vectorizer
+    
+    Parameters
+    ----------
+    text_series : Pandas Series of text
+    vectorizer : pretrained sklearn vectorizer
+    """
+    vectors = vectorizer.transform(text_series)
+    vectorized_series = [vectors[i] for i in range(vectors.shape[0])]
+    return vectorized_series
+
+
+def add_text_features_to_df(df):
+    """
+    Adds features to DataFrame
+    
+    Parameters
+    ----------
+    df : DataFrame
+    """
+    df['full_text'] = df['Title'].str.cat(df['body_text'], sep=" ", na_rep="")
+    df = add_v1_features(df.copy())
+
+    return df
+
+
+def add_v1_features(df):
+    """
+    Add our first features to an input DataFrame
+    
+    Parameters
+    ----------
+    df : Pandas DataFrame
+        DataFrame of questions
+    """
+    df['action_verb_full'] = (
+        df['full_text'].str.contains('can', regex=False)
+        | df['full_text'].str.contains('What', regex=False)
+        | df['full_text'].str.contains('should', regex=False)
+    )
+    df["language_question"] = (
+        df["full_text"].str.contains("punctuate", regex=False)
+        | df["full_text"].str.contains("capitalize", regex=False)
+        | df["full_text"].str.contains("abbreviate", regex=False)
+    )
+    df["question_mark_full"] = df["full_text"].str.contains("?", regex=False)
+    df["text_len"] = df["full_text"].str.len()
+    return df
 
 
 def get_vectorized_inputs_and_label(df):
@@ -81,9 +132,45 @@ def get_vectorized_inputs_and_label(df):
         1,
     )
     label = df['Score'] > df['Score'].median()
-
     return vectorized_features, label
 
+
+def get_feature_vector_and_label(df, feature_names):
+    """
+    Generate input and output vectors using the vectors feature and
+    the given feature names
+    
+    Parameters
+    ----------
+    df : Pandas DataFrame
+        input dataframe
+    feature_names : array
+        Names of feature columns (other than vectors)
+    """
+    vec_features = vstack(df["vectors"])
+    num_features = df[feature_names].astype(float)
+    features = hstack([vec_features, num_features])
+    labels = df['Score'] > df["Score"].median()
+    return features, labels
+
+
+def get_random_train_test_split(posts, test_size=0.3, random_state=42):
+    """
+    Get train/test split from DataFrame
+    Assume the DataFrame has one row per question example
+
+    Parameters
+    ----------
+    posts : Pandas DataFrame
+        All posts with their labels
+    test_size : float, optional
+        The proportion to allocate to test, by default 0.3
+    random_state : int, optional
+        random_seed, by default 42
+    """
+    return train_test_split(
+        posts, test_size=test_size, random_state=random_state
+    )
 
 
 def get_split_by_author(
