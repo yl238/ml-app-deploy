@@ -15,9 +15,35 @@ FEATURE_ARR = [
 ]
 
 curr_path = Path(os.path.dirname(__file__))
+print(curr_path)
 
 model_path = Path('../models/model_1.pkl')
-vectorizer_path = Path('../models/vectroizer_1.pkl')
+vectorizer_path = Path('../models/vectorizer_1.pkl')
 
 VECTORIZER = joblib.load(curr_path / vectorizer_path)
 MODEL = joblib.load(curr_path / model_path)
+
+
+def get_model_probabilities_for_input_texts(text_array):
+    """
+    Returns an array of probability scores representing
+    the likelihood of a question receiving a high score
+    
+    Parameters
+    ----------
+    text_array : array
+        questions to be scored
+
+    Returns
+    ------
+    array of predicted probabilities
+        [[prob_low_score_1, prob_high_score_1],...]
+    """
+    global FEATURE_ARR, VECTORIZER, MODEL
+    vectors = VECTORIZER.transform(text_array)
+    text_ser = pd.DataFrame(text_array, columns=['full_text'])
+    text_ser = add_v1_features(text_ser)
+    vec_features = vstack(vectors)
+    num_features = text_ser[FEATURE_ARR].astype(float)
+    features = hstack([vec_features, num_features])
+    return MODEL.predict_proba(features)
