@@ -354,3 +354,88 @@ def get_calibration_plot(predicted_proba_y, true_y, figsize=(10, 10)):
     ax2.legend(loc="upper center", ncol=2)
 
     plt.tight_layout()
+
+
+def get_top_k(df, proba_col, true_label_col, k=5, decision_threshold=0.5):
+    """
+    For binary classification problems, returns k most correct 
+    and incorrect examples for each class. Also returns k most
+    unsure examples.
+    
+    Parameters
+    ----------
+    df : Pandas DataFrame
+        Predictions and true labels
+    proba_col : string
+        Column name of predicted probabilities
+    true_label_col : string
+        Column name of true labels
+    k : int, optional
+        Number of examples to show for each category, by default 5
+    decision_threshold : float, optional
+        Classifier decision boundary to classify as positive, by default 0.5
+
+    Returns
+    -------
+    correct_pos, incorrect_pos, incorrect_neg, unsure
+    """
+    # Get correct and incorrect predictions
+    correct = df[
+        (df[proba_col] > decision_threshold) == df[true_label_col]
+    ].copy()
+
+    incorrect = df[
+        (df[proba_col] > decision_threshold) != df[true_label_col]
+    ].copy()
+
+    top_correct_positive = correct[correct[true_label_col]].nlargest(
+        k, proba_col
+    )
+    top_correct_negative = correct[~correct[true_label_col]].nsmallest(
+        k, proba_col
+    )
+
+    top_incorrect_positive = incorrect[incorrect[true_label_col]].nsmallest(
+        k, proba_col
+    )
+    top_incorrect_negative = incorrect[~incorrect[true_label_col]].nlargest(
+        k, proba_col
+    )
+
+    # Get closest examples to decision threshold
+    most_uncertain = df.iloc[
+        (df[proba_col] - decision_threshold).abs().argsort()[:k]
+    ]
+
+    return (
+        top_correct_positive,
+        top_correct_negative,
+        top_incorrect_positive,
+        top_incorrect_negative,
+        most_uncertain,
+    )
+
+    
+    def get_feature_importance(clf, feature_names):
+        """
+        Get a list of feature importances for a classifier
+        
+        Parameters
+        ----------
+        clf : A scikit-learn classifier
+            Classifier to obtain feature importance for
+        feature_names : list
+            List of the names of features in the order they were given to the 
+            classifier
+        Returns
+        -------
+            Sorted list of tuples of the form (feature_name, score)
+        """
+        importances = clf.feature_importances_
+        indices_sorted_by_importance = np.argsort(importances)[::-1]
+        return list(
+            zip(
+                feature_names[indices_sorted_by_importance],
+                importances[indices_sorted_by_importance],
+            )
+        )

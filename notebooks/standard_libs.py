@@ -10,3 +10,5 @@ import sys
 sys.path.append("..")
 import warnings
 warnings.filterwarnings('ignore')
+
+pd.set_option('display.max_colwidth', -1)
