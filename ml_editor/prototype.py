@@ -206,6 +206,24 @@ def get_reading_level_from_flesch(fs):
     else:
         return 'Very difficult to read'
 
+def get_recommendations_from_input(txt):
+    """
+    Cleans, preprocesses, and generates heuristic 
+    suggestion for input string
+    Parameters
+    ----------
+    txt: String 
+        Input text
+    Returns
+    -------
+        Suggestions for a given text input
+    """
+    processed = clean_input(txt)
+    tokenized_sentences = preprocess_input(processed)
+    suggestions = get_suggestions(tokenized_sentences)
+    return suggestions
+
+
 if __name__ == '__main__':
     text = parse_arguments()
     print(get_suggestions(text))

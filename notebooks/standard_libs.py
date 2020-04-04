@@ -1,3 +1,8 @@
+import sys
+sys.path.append("..")
+import warnings
+warnings.filterwarnings('ignore')
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,9 +12,5 @@ from pathlib import Path
 import joblib
 import random
 
-import sys
-sys.path.append("..")
-import warnings
-warnings.filterwarnings('ignore')
 
 pd.set_option('display.max_colwidth', -1)

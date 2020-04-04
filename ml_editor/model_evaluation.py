@@ -136,7 +136,7 @@ def get_confusion_matrix_plot(
     display_labels=None, include_values=True,
     xticks_rotation='horizontal',
     values_format=None,
-    cmap='viridis',
+    cmap='Blues',
     figsize=(10, 10),
     font_size=12,
     title='Confusion Matrix'
@@ -439,3 +439,29 @@ def get_feature_importance(clf, feature_names):
             importances[indices_sorted_by_importance],
         )
     )
+
+
+def get_metrics(y_test, y_predicted):
+    """
+    Calculate classification model metrics
+    
+    Parameters
+    ----------
+    y_test : array-like
+        True target values
+    y_predicted : array-like
+        predicted values
+    """
+    # true positives / (true positives+false positives)
+    precision = precision_score(y_test, y_predicted, pos_label=True,
+                                    average='binary')             
+    # true positives / (true positives + false negatives)
+    recall = recall_score(y_test, y_predicted, pos_label=True,
+                              average='binary')
+    
+    # harmonic mean of precision and recall
+    f1 = f1_score(y_test, y_predicted, pos_label=True, average='binary')
+    
+    # true positives + true negatives/ total
+    accuracy = accuracy_score(y_test, y_predicted)
+    return accuracy, precision, recall, f1
