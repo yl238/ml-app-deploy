@@ -416,26 +416,26 @@ def get_top_k(df, proba_col, true_label_col, k=5, decision_threshold=0.5):
     )
 
     
-    def get_feature_importance(clf, feature_names):
-        """
-        Get a list of feature importances for a classifier
-        
-        Parameters
-        ----------
-        clf : A scikit-learn classifier
-            Classifier to obtain feature importance for
-        feature_names : list
-            List of the names of features in the order they were given to the 
-            classifier
-        Returns
-        -------
-            Sorted list of tuples of the form (feature_name, score)
-        """
-        importances = clf.feature_importances_
-        indices_sorted_by_importance = np.argsort(importances)[::-1]
-        return list(
-            zip(
-                feature_names[indices_sorted_by_importance],
-                importances[indices_sorted_by_importance],
-            )
+def get_feature_importance(clf, feature_names):
+    """
+    Get a list of feature importances for a classifier
+    
+    Parameters
+    ----------
+    clf : A scikit-learn classifier
+        Classifier to obtain feature importance for
+    feature_names : list
+        List of the names of features in the order they were given to the 
+        classifier
+    Returns
+    -------
+        Sorted list of tuples of the form (feature_name, score)
+    """
+    importances = clf.feature_importances_
+    indices_sorted_by_importance = np.argsort(importances)[::-1]
+    return list(
+        zip(
+            feature_names[indices_sorted_by_importance],
+            importances[indices_sorted_by_importance],
         )
+    )
