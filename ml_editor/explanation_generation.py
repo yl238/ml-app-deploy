@@ -88,7 +88,6 @@ def get_explainer():
     curr_path = Path(os.path.dirname(__file__))
     data_path = Path('../data/writers_with_features.csv')
     df = pd.read_csv(curr_path / data_path)
-
     train_df, test_df = get_split_by_author(df, test_size=0.2, random_state=42)
     explainer = LimeTabularExplainer(
         train_df[FEATURE_ARR].values,
