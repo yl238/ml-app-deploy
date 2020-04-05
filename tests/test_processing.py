@@ -7,7 +7,7 @@ import pandas as pd
 import pytest
 
 # Needed for pytest to resolve imports properly
-myPath = os.path.dirname(os.path.abspth(__file__))
+myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, myPath+'../../')
 
 from ml_editor.data_ingestion import parse_xml_to_csv
