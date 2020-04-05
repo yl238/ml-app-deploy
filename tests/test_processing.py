@@ -41,13 +41,6 @@ def df_with_features():
     return add_text_features_to_df(df.copy())
 
 
-def test_random_split_proportion():
-    df = pd.read_csv(CURR_PATH / CSV_PATH)
-    train, test = get_random_train_test_split(df, test_size=0.3)
-    print(len(train), len(test))
-    assert float(len(train) / 0.7) == float(len(test) / 0.3)
-
-
 def test_author_split_no_leakage():
     df = pd.read_csv(CURR_PATH / CSV_PATH)
     train, test = get_split_by_author(df, test_size=0.3)

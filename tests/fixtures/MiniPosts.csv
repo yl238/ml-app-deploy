@@ -1,0 +1,166 @@
+,Id,PostTypeId,CreationDate,Score,ViewCount,Body,OwnerUserId,LastEditorUserId,LastEditDate,LastActivityDate,Title,Tags,AnswerCount,CommentCount,body_text,ParentId,AcceptedAnswerId,FavoriteCount
+0,3817805,1,2010-09-28T23:40:59.277,1,517,"<p>I have the following setup<br>
+WinXP SP2, IIS 5.1  </p>
+
+<p>I have an<br>
+Asp.net website(a) calling -> Asp.net Webservice(b) calling a function Creating a COM object in an already running EXE server(c).<br>
+This COM server works fine with local clients.</p>
+
+<p>The CreateObject fails even when run on a machine when COM server is registered as a user(adminuser) with all privileges on this machine and asp.net is running as ASPNET.   </p>
+
+<p>I get Server execution failed (Exception from HRESULT: 0x80080005 (CO_E_SERVER_EXEC_FAILURE)) </p>
+
+<p>If I run the asp.net as a logged in user(adminuser) by chainging ""processmodel"" in the machine.config with username=""adminuser"".... then I can make this work  </p>
+
+<p>So browser(adminuser)->website(a)->Webservice(b)->CreateObject(c) succeeds</p>
+
+<p>From a different machine, a browser connecting as the same logged in user(adminsuser) fails with Server execution failure.  </p>
+
+<p>So browser(adminuser)->website(a)->Webservice(b)->CreateObject(c) fails</p>
+
+<p>If asp.net runs as SYSTEM then I get Server execution failed (Exception from HRESULT: 0x80080005 (CO_E_SERVER_EXEC_FAILURE)) even on the local machine.</p>
+
+<p>I am not able to get this to work beyond my local machine. Any insights into settings? Has anyone tried this?</p>
+
+<p>Thanks</p>
+",461190,461190,2010-09-28T23:49:07.013,2010-09-28T23:49:07.013,out of proc COM server unable to createobject from asp.net webservice,<c#><asp.net><web-services><com>,0,3,"I have the following setup
+WinXP SP2, IIS 5.1  
+I have an
+Asp.net website(a) calling -> Asp.net Webservice(b) calling a function Creating a COM object in an already running EXE server(c).
+This COM server works fine with local clients.
+The CreateObject fails even when run on a machine when COM server is registered as a user(adminuser) with all privileges on this machine and asp.net is running as ASPNET.   
+I get Server execution failed (Exception from HRESULT: 0x80080005 (CO_E_SERVER_EXEC_FAILURE)) 
+If I run the asp.net as a logged in user(adminuser) by chainging ""processmodel"" in the machine.config with username=""adminuser"".... then I can make this work  
+So browser(adminuser)->website(a)->Webservice(b)->CreateObject(c) succeeds
+From a different machine, a browser connecting as the same logged in user(adminsuser) fails with Server execution failure.  
+So browser(adminuser)->website(a)->Webservice(b)->CreateObject(c) fails
+If asp.net runs as SYSTEM then I get Server execution failed (Exception from HRESULT: 0x80080005 (CO_E_SERVER_EXEC_FAILURE)) even on the local machine.
+I am not able to get this to work beyond my local machine. Any insights into settings? Has anyone tried this?
+Thanks
+",,,
+1,3817806,2,2010-09-28T23:41:06.263,0,,"<p>I think you've forgotten the <code>self</code> argument all over the place.</p>
+
+<p>i.e. change this:</p>
+
+<pre><code>class Handlers:
+    def adjustbottomBracketHeight(widget):
+        obj.bottomBracketHeight = widget.get_value()
+</code></pre>
+
+<p>to</p>
+
+<pre><code>class Handlers:
+    def adjustbottomBracketHeight(obj, widget):
+        obj.bottomBracketHeight = widget.get_value()
+</code></pre>
+",313063,,,2010-09-28T23:41:06.263,,,,3,"I think you've forgotten the self argument all over the place.
+i.e. change this:
+class Handlers:
+    def adjustbottomBracketHeight(widget):
+        obj.bottomBracketHeight = widget.get_value()
+
+to
+class Handlers:
+    def adjustbottomBracketHeight(obj, widget):
+        obj.bottomBracketHeight = widget.get_value()
+
+",3817758,,
+2,3817808,1,2010-09-28T23:41:23.720,1,641,"<p>I can't login to the admin site on localhost.</p>
+
+<p>I try with firefox, IE. </p>
+
+<p>I try using the 127.0.0.1:8000 address. Also, I set the <code>SESSION_COOKIE_DOMAIN</code> to <code>localhost</code>, <code>localhost:8000</code></p>
+
+<p>I change the host file to:</p>
+
+<pre><code>127.0.0.1       test.com
+</code></pre>
+
+<p>and set:</p>
+
+<pre><code>SESSION_COOKIE_DOMAIN = 'test.com'
+</code></pre>
+
+<p>I can login in production (only after the <code>SESSION_COOKIE_DOMAIN</code> configuration).</p>
+
+<p>I'm using django rev 1.0.1. I can't upgrade to last trunk. The best, is move to 1.0.2.</p>
+
+<p><strong>Update</strong>: I try adding to the host file my public domain, and not works (ie: <code>127.0.0.1 www.mysite.com</code>).</p>
+",53185,53185,2010-09-30T17:02:24.567,2018-04-04T14:47:10.023,Unable to login to admin site in localhost,<django><django-admin><localhost>,2,0,"I can't login to the admin site on localhost.
+I try with firefox, IE. 
+I try using the 127.0.0.1:8000 address. Also, I set the SESSION_COOKIE_DOMAIN to localhost, localhost:8000
+I change the host file to:
+127.0.0.1       test.com
+
+and set:
+SESSION_COOKIE_DOMAIN = 'test.com'
+
+I can login in production (only after the SESSION_COOKIE_DOMAIN configuration).
+I'm using django rev 1.0.1. I can't upgrade to last trunk. The best, is move to 1.0.2.
+Update: I try adding to the host file my public domain, and not works (ie: 127.0.0.1 www.mysite.com).
+",,,
+3,3817810,2,2010-09-28T23:41:27.863,-1,,"<p>hmm</p>
+
+<pre><code>var dialog = $("".modal"").dialog({ autoOpen: false });
+
+
+$(""#click"").click( function(e) {
+   e.preventDefault();
+   dialog.dialog(""open"");
+});
+</code></pre>
+
+<p>this one works for me fine !</p>
+",119084,,,2010-09-28T23:41:27.863,,,,1,"hmm
+var dialog = $("".modal"").dialog({ autoOpen: false });
+
+
+$(""#click"").click( function(e) {
+   e.preventDefault();
+   dialog.dialog(""open"");
+});
+
+this one works for me fine !
+",3817736,,
+4,3817811,2,2010-09-28T23:41:33.820,5,,"<p>You cannot. You have to download, uncompress and run it without the ubuntu repository. In this scenario you can upgrade without problems ;-)</p>
+
+<p>If you want to use Helios through the ubuntu repository you have to wait beyond Maverick (10.10) as you can see here: <a href=""https://launchpad.net/ubuntu/+source/eclipse"" rel=""noreferrer"">https://launchpad.net/ubuntu/+source/eclipse</a></p>
+",40441,,,2010-09-28T23:41:33.820,,,,3,"You cannot. You have to download, uncompress and run it without the ubuntu repository. In this scenario you can upgrade without problems ;-)
+If you want to use Helios through the ubuntu repository you have to wait beyond Maverick (10.10) as you can see here: https://launchpad.net/ubuntu/+source/eclipse
+",3680250,,
+5,3817812,1,2010-09-28T23:41:40.840,13,19236,"<p>My map has several hundred markers within a city. Usually no more than a 20 mile radius.
+I've read through the documentation and haven't found a way to set the init to automatically pan between every marker, no matter the distance.
+The default behavior is to pan if close, jump if far.
+I understand why they would do this since the map doesn't load the whole world at the selected zoom level and it could screw up if the distance was too great. However, I think it could handle 20 mile radius with minimal complaints.</p>
+
+<p>If anyone has any ideas, I'd love to hear them.
+Thanks</p>
+",461186,222908,2010-09-28T23:45:32.450,2015-10-26T05:44:10.617,Google Maps v3 - can I ensure smooth panning every time?,<javascript><google-maps><google-maps-api-3>,4,0,"My map has several hundred markers within a city. Usually no more than a 20 mile radius.
+I've read through the documentation and haven't found a way to set the init to automatically pan between every marker, no matter the distance.
+The default behavior is to pan if close, jump if far.
+I understand why they would do this since the map doesn't load the whole world at the selected zoom level and it could screw up if the distance was too great. However, I think it could handle 20 mile radius with minimal complaints.
+If anyone has any ideas, I'd love to hear them.
+Thanks
+",,3817835,3
+6,3817813,2,2010-09-28T23:41:43.173,0,,"<p>On removing <code>initialIndex: 0,</code> <a href=""http://jsbin.com/ogilo/4#http://bit.ly/cKnMc2"" rel=""nofollow"">jsbin.com/ogilo/4#http://bit.ly/cKnMc2</a> work well on all browsers, just unfortunately is casing a new bug for IE7, IE6 after giving <code>zero</code> GET request for <a href=""http://jsbin.com/ogilo/4"" rel=""nofollow"">jsbin.com/ogilo/4</a></p>
+",351900,,,2010-09-28T23:41:43.173,,,,0,"On removing initialIndex: 0, jsbin.com/ogilo/4#http://bit.ly/cKnMc2 work well on all browsers, just unfortunately is casing a new bug for IE7, IE6 after giving zero GET request for jsbin.com/ogilo/4
+",3816397,,
+7,3817816,2,2010-09-28T23:42:47.733,0,,"<p>So this is actually very simple, all you need to do is print the week heading every time the week changes. If you want this to happen every Friday, just have something like this in the loop inside the while statement:</p>
+
+<pre><code>&lt;?php
+if(get_the_time(""N"")==5):
+?&gt;
+&lt;h1&gt;&lt;?php the_time(); ?&gt;&lt;/h1&gt;
+&lt;?php endif; ?&gt;
+</code></pre>
+
+<p>You'll need some logic to determine if the first post is not a Friday, and compensate for the difference. But this is pretty close I think.</p>
+",273663,,,2010-09-28T23:42:47.733,,,,0,"So this is actually very simple, all you need to do is print the week heading every time the week changes. If you want this to happen every Friday, just have something like this in the loop inside the while statement:
+<?php
+if(get_the_time(""N"")==5):
+?>
+<h1><?php the_time(); ?></h1>
+<?php endif; ?>
+
+You'll need some logic to determine if the first post is not a Friday, and compensate for the difference. But this is pretty close I think.
+",3816586,,

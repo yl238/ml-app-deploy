@@ -13,7 +13,7 @@ from ml_editor.data_processing import (
     get_vectorized_series,
     get_feature_vector_and_label,
 )
-from ml_editor.model_v1 import get_model_probabilities_for_input_texts
+from ml_editor.model_v1 import get_model_predictions_for_input_texts
 
 myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, myPath+'/../')
@@ -60,7 +60,7 @@ def trained_v1_vectorizer():
 def test_model_prediction_dimensions(
     df_with_features, trained_v1_vectorizer, trained_v1_model
 ):
-    df_with_features["vectors"] = get_feature_vector_and_label(
+    df_with_features["vectors"] = get_vectorized_series(
         df_with_features["full_text"].copy(), trained_v1_vectorizer
     )
 
@@ -69,9 +69,9 @@ def test_model_prediction_dimensions(
     )
 
     probas = trained_v1_model.predict_proba(features)
-    # The model makes one prediction per input example
+    # the model makes one prediction per input example
     assert probas.shape[0] == features.shape[0]
-    # The model predicts probabilities for two classes
+    # the model predicts probabilities for two classes
     assert probas.shape[1] == 2
 
 
@@ -92,7 +92,7 @@ def test_model_proba_values(
 
 
 def test_model_predicts_no_on_bad_question():
-    input_text = "This isn't even a question, we should score it poorly"
-    is_question_good = get_model_probabilities_for_input_texts([input_text])
+    input_text = "This isn't even a question. We should score it poorly"
+    is_question_good = get_model_predictions_for_input_texts([input_text])
     # The model classifies the question as poor
     assert not is_question_good[0]

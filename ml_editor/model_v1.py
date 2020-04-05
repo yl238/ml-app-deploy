@@ -47,3 +47,21 @@ def get_model_probabilities_for_input_texts(text_array):
     num_features = text_ser[FEATURE_ARR].astype(float)
     features = hstack([vec_features, num_features])
     return MODEL.predict_proba(features)
+
+def get_model_predictions_for_input_texts(text_array):
+    """
+    Returns an array of labels for a given array of questions
+    True represents high scores, False low scores
+    format is: [ False, True, ...]
+    
+    Parameters
+    ----------
+    text_array:  array-like
+        list of questions to be classified
+    Returns
+    -------
+        array of classes
+    """
+    probs = get_model_probabilities_for_input_texts(text_array)
+    predicted_classes = probs[:, 0] < probs[:, 1]
+    return predicted_classes
