@@ -30,7 +30,7 @@ XML_PATH = Path('fixtures/MiniPosts.xml')
 CSV_PATH = Path('fixtures/MiniPosts.csv')
 
 # Make sure we have a csv
-@pytest.fixture(scop="session", autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def get_csv():
     parse_xml_to_csv(CURR_PATH / XML_PATH, save_path=CURR_PATH / CSV_PATH)
 
