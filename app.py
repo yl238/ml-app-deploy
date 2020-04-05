@@ -25,7 +25,7 @@ def v1():
     return handle_text_request(request, "v1.html")
 
 
-@app.route("/v2", method=["POST", "GET"])
+@app.route("/v2", methods=["POST", "GET"])
 def v2():
     """
     Renders v2 model input form and results
